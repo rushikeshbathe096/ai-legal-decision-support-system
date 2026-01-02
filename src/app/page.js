@@ -1,65 +1,111 @@
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Gavel, ShieldCheck, FileSearch, Zap } from "lucide-react";
+import Link from "next/link";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="w-full">
+
+      {/* HERO SECTION */}
+      <section className="flex justify-center h-[55vh] sm:h-[70vh] w-full">
+        <div className="flex flex-col gap-6 justify-center items-center text-center px-4">
+          <div className="space-y-3">
+            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
+              AI‑Powered Legal Decision Support
+            </h1>
+            <p className="text-gray-400 max-w-[760px] mx-auto">
+              Analyze FIRs, case documents, and judgments using explainable GenAI.  
+              Built for Judges, Police, and Government Legal Departments.
+            </p>
+          </div>
+
+          <div className="flex gap-4">
+            <Link
+              href="/auth/signin"
+              className="bg-gray-200 hover:bg-gray-300 transition-all text-black px-5 py-2 rounded-md"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              Get Started
+            </Link>
+            <Button variant="outline">Learn More</Button>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES / STAKEHOLDERS */}
+      <section className="min-h-[50vh] bg-gray-600/10 w-full flex justify-center items-center px-4">
+        <div className="grid gap-8 grid-cols-1 sm:grid-cols-3 max-w-6xl w-full">
+
+          {/* JUDGE */}
+          <div className="flex flex-col items-center text-center gap-4 p-4">
+            <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gray-800">
+              <Gavel className="h-8 w-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold">Judges & Courts</h3>
+            <p className="text-gray-400 max-w-[260px]">
+              Prioritize cases, summarize large case files, and explore precedents
+              using citation‑backed AI insights.
+            </p>
+          </div>
+
+          {/* POLICE */}
+          <div className="flex flex-col items-center text-center gap-4 p-4">
+            <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gray-800">
+              <ShieldCheck className="h-8 w-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold">Police & Investigation</h3>
+            <p className="text-gray-400 max-w-[260px]">
+              Upload FIRs, extract IPC sections, generate summaries, and
+              identify missing investigative elements.
+            </p>
+          </div>
+
+          {/* GOVT LEGAL */}
+          <div className="flex flex-col items-center text-center gap-4 p-4">
+            <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gray-800">
+              <FileSearch className="h-8 w-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold">Government Legal Dept</h3>
+            <p className="text-gray-400 max-w-[260px]">
+              Track government cases, analyze litigation risk, and
+              study outcomes of similar past cases.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* WHY THIS APP */}
+      <section className="min-h-[40vh] w-full flex justify-center items-center px-4">
+        <div className="max-w-4xl text-center space-y-4">
+          <h2 className="text-2xl font-bold">
+            Why This Platform?
+          </h2>
+          <p className="text-gray-400">
+            Legal professionals deal with thousands of pages across FIRs,
+            charge sheets, and judgments. Our system uses a
+            <span className="text-white font-medium"> rule‑aware RAG pipeline </span>
+            to ensure AI responses are explainable, citation‑backed,
+            and ethically constrained.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* CTA */}
+      <section className="h-[45vh] w-full flex flex-col justify-center items-center bg-gray-600/10 px-4">
+        <div className="space-y-4 text-center max-w-xl">
+          <h3 className="text-2xl font-bold">
+            Start Exploring Legal Intelligence
+          </h3>
+          <p className="text-gray-400 text-sm">
+            Sign in to access your role‑specific dashboard and begin
+            analyzing legal cases with AI assistance.
+          </p>
+          <Link href="/auth/signup">
+            <Button className="mt-2">Create an Account</Button>
+          </Link>
         </div>
-      </main>
-    </div>
+      </section>
+
+    </main>
   );
 }
