@@ -1,9 +1,48 @@
+"use client";
+
+import Navbar from "@/components/navbar/Navbar";
 import { Button } from "@/components/ui/button";
 import { Gavel, ShieldCheck, FileSearch, Zap } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter} from "next/navigation";
 
 export default function LandingPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const handleGetStarted = async () => {
+    // Not signed in → go to signin
+    if (!session) {
+      router.push("/auth/signin");
+      return;
+    }
+
+    // Signed in → fetch user role
+    const res = await fetch("/api/user/me");
+
+    if (!res.ok) {
+      // Edge case: session exists but user doc missing
+      router.push("/auth/role-gate");
+      return;
+    }
+
+    const user = await res.json();
+
+    // Role-based redirect
+    if (user.role === "police") {
+      router.push("/police/dashboard");
+    } else if (user.role === "judge") {
+      router.push("/judge/dashboard");
+    } else if (user.role === "govt") {
+      router.push("/govt/dashboard");
+    } else {
+      router.push("/auth/role-gate");
+    }
+  };
   return (
+    <>
+    <Navbar />
     <main className="w-full">
 
       {/* HERO SECTION */}
@@ -20,12 +59,9 @@ export default function LandingPage() {
           </div>
 
           <div className="flex gap-4">
-            <Link
-              href="/auth/signin"
-              className="bg-gray-200 hover:bg-gray-300 transition-all text-black px-5 py-2 rounded-md"
-            >
-              Get Started
-            </Link>
+            <Button onClick={handleGetStarted}>
+          {session ? "Go to Dashboard" : "Get Started"}
+        </Button>
             <Button variant="outline">Learn More</Button>
           </div>
         </div>
@@ -100,12 +136,13 @@ export default function LandingPage() {
             Sign in to access your role‑specific dashboard and begin
             analyzing legal cases with AI assistance.
           </p>
-          <Link href="/auth/signup">
+          <Link href="/auth/signin">
             <Button className="mt-2">Create an Account</Button>
           </Link>
         </div>
       </section>
 
     </main>
+    </>
   );
 }

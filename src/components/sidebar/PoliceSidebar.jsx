@@ -1,4 +1,7 @@
-import { Calendar, Home, Inbox, Pencil, Search, Settings } from "lucide-react"
+"use client";
+
+import { Home, Upload, FolderOpen } from "lucide-react";
+import Link from "next/link";
 
 import {
   Sidebar,
@@ -9,47 +12,42 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-// Menu items.
 const items = [
   {
-    title: "Home",
-    url: "/",
+    title: "Dashboard",
+    url: "/police/dashboard",
     icon: Home,
   },
   {
-    title: "",
-    url: "",
-    icon: Inbox,
+    title: "Upload FIR",
+    url: "/police/upload",
+    icon: Upload,
   },
   {
-    title: "",
-    url: "",
-    icon: Pencil,
+    title: "Cases",
+    url: "/police/dashboard",
+    icon: FolderOpen,
   },
-  {
-    title: "Search",
-    url: "/search",
-    icon: Search,
-  },
-]
+];
 
-export function AppSidebar() {
+export default function PoliceSidebar() {
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Police</SidebarGroupLabel>
+
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
+                    <Link href={item.url} className="flex gap-2 items-center">
+                      <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -58,5 +56,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
