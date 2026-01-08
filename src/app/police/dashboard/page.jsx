@@ -1,3 +1,3 @@
 export default function DashboardPage() {
-    <h1>Welcome to dashboard</h1>
-}
+    return(<h1 className="text-white flex justify-center items-center">Welcome to dashboard</h1>
+)}
