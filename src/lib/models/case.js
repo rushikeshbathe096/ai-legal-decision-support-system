@@ -36,4 +36,4 @@ const CaseSchema = new mongoose.Schema({
     type: Date, default: Date.now 
     },
 });
-export default mongoose.models.Case || mongoose.model("Case", CaseSchema);
+export default mongoose.models.Case || mongoose.model("Case", CaseSchema)
