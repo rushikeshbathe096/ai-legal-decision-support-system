@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import connectDB from "@/lib/db/mongoose";
-import Case from "@/models/Case";
-import Document from "@/models/Document";
-import User from "@/models/User";
+import { authOptions } from "../../auth/[...nextauth]/route";
+import {connectDB} from "@/lib/db/mongoose";
+import Case from "@/lib/models/case";
+import Document from "@/lib/models/Documents";
+import User from "@/lib/models/User";
 import fs from "fs";
 import path from "path";
 export async function POST(req) {

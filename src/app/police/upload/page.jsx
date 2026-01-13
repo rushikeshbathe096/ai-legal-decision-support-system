@@ -12,6 +12,40 @@ export default function UploadFIRPage() {
   const [firDate, setFirDate] = useState("");
   const [file, setFile] = useState(null);
 
+  const handleSubmit = async () => {
+  if (!file || !firNumber) return;
+
+  const formData = new FormData();
+  formData.append("firNumber", firNumber);
+  formData.append("policeStation", policeStation);
+  formData.append("firDate", firDate);
+  formData.append("file", file);
+
+  try {
+    const res = await fetch("/api/police/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Upload failed");
+      return;
+    }
+
+    console.log("Case created:", data.caseId);
+
+    // Redirect to dashboard or case page
+    window.location.href = "/police/dashboard";
+
+  } catch (error) {
+    console.error("Upload error:", error);
+    alert("Something went wrong");
+  }
+};
+
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
@@ -123,14 +157,7 @@ export default function UploadFIRPage() {
         <div className="pt-4 flex justify-end">
           <Button
             disabled={isSubmitDisabled}
-            onClick={() => {
-              console.log({
-                firNumber,
-                policeStation,
-                firDate,
-                file,
-              });
-            }}
+            onClick={handleSubmit}
           >
             Upload
           </Button>
