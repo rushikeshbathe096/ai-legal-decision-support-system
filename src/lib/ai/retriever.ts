@@ -1,27 +1,42 @@
+const STOP_WORDS = new Set([
+  "the","is","and","or","to","of","a","in","for","on","with",
+  "that","this","was","were","by","as","at","an","be"
+])
+
+function tokenize(text: string): string[] {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, "")
+    .split(/\s+/)
+    .filter(word => word.length > 2 && !STOP_WORDS.has(word))
+}
+
 export function retrieveRelevantChunks(
   chunks: string[],
   query: string,
-  topK: number = 5
+  topK = 3
 ): string[] {
-  if (!query || chunks.length === 0) return []
 
-  const lowerQuery = query.toLowerCase()
+  const queryTokens = tokenize(query)
 
   const scored = chunks.map(chunk => {
-    let score = 0
-    const lowerChunk = chunk.toLowerCase()
+    const chunkTokens = tokenize(chunk)
 
-    lowerQuery.split(" ").forEach(word => {
-      if (lowerChunk.includes(word)) {
-        score += 1
+    let score = 0
+    for (const qt of queryTokens) {
+      for (const ct of chunkTokens) {
+        if (ct.includes(qt) || qt.includes(ct)) {
+          score += 1
+        }
       }
-    })
+    }
 
     return { chunk, score }
   })
 
-  return scored
+  const sorted = scored
+    .filter(item => item.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, topK)
-    .map(item => item.chunk)
+
+  return sorted.slice(0, topK).map(i => i.chunk)
 }
