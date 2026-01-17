@@ -14,12 +14,12 @@ export async function runFirRagPipeline(
 
   const chunks = chunkText(firText)
 
-  let relevantChunks = retrieveRelevantChunks(
+  // 🔥 AWAIT added here
+  let relevantChunks = await retrieveRelevantChunks(
     chunks,
     "Summarize this FIR"
   )
 
-  // Fallback if retriever fails
   if (relevantChunks.length === 0) {
     relevantChunks = chunks.slice(0, 3)
   }
