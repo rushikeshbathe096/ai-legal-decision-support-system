@@ -1,4 +1,6 @@
-faiss-cpu
-sentence-transformers
 fastapi
 uvicorn
+faiss-cpu
+sentence-transformers
+numpy
+pydantic

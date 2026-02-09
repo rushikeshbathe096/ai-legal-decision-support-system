@@ -44,3 +44,5 @@ next-env.d.ts
 #python environment
 faiss/venv/
      
+faiss/index.faiss
+faiss/meta.json
