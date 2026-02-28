@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
-import {connectDB} from "@/lib/db/mongoose";
+import { connectDB } from "@/lib/db/mongoose";
 import Case from "@/lib/models/case";
 import Document from "@/lib/models/Documents";
 import User from "@/lib/models/User";
@@ -29,7 +29,7 @@ export async function POST(req) {
     // Save file locally
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const uploadDir = path.join(process.cwd(), "uploads", "firs");
+    const uploadDir = path.join(process.cwd(), "public", "uploads", "firs");
     if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
     const fileName = `${Date.now()}_${file.name}`;
     const filePath = path.join(uploadDir, fileName);

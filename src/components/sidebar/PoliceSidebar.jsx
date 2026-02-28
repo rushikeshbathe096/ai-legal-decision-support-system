@@ -27,7 +27,7 @@ const items = [
   },
   {
     title: "Cases",
-    url: "/police/dashboard",
+    url: "/police/cases",
     icon: FolderOpen,
   },
 ];
