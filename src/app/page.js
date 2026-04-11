@@ -1,8 +1,4 @@
-"use client";
-
-import Navbar from "@/components/navbar/Navbar";
-import { Button } from "@/components/ui/button";
-import { Gavel, ShieldCheck, FileSearch, Zap } from "lucide-react";
+import { Gavel, ShieldCheck, FileSearch } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter} from "next/navigation";
@@ -50,40 +46,47 @@ export default function LandingPage() {
         <div className="flex flex-col gap-6 justify-center items-center text-center px-4">
           <div className="space-y-3">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-              AI‑Powered Legal Decision Support
+              AI-Powered Legal Decision Support
             </h1>
             <p className="text-gray-400 max-w-[760px] mx-auto">
-              Analyze FIRs, case documents, and judgments using explainable GenAI.  
+              Analyze FIRs, case documents, and judgments using explainable GenAI.
               Built for Judges, Police, and Government Legal Departments.
             </p>
           </div>
 
           <div className="flex gap-4">
-            <Button onClick={handleGetStarted}>
-          {session ? "Go to Dashboard" : "Get Started"}
-        </Button>
-            <Button variant="outline">Learn More</Button>
+            <Link
+              href="/auth/signin"
+              className="bg-gray-200 hover:bg-gray-300 transition-all text-black px-5 py-2 rounded-md"
+            >
+              Get Started
+            </Link>
+
+            <Link
+              href="#"
+              className="border border-gray-400 hover:bg-gray-800 transition-all px-5 py-2 rounded-md"
+            >
+              Learn More
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* FEATURES / STAKEHOLDERS */}
+      {/* FEATURES */}
       <section className="min-h-[50vh] bg-gray-600/10 w-full flex justify-center items-center px-4">
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-3 max-w-6xl w-full">
 
-          {/* JUDGE */}
           <div className="flex flex-col items-center text-center gap-4 p-4">
             <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gray-800">
               <Gavel className="h-8 w-8 text-white" />
             </div>
             <h3 className="text-xl font-semibold">Judges & Courts</h3>
             <p className="text-gray-400 max-w-[260px]">
-              Prioritize cases, summarize large case files, and explore precedents
-              using citation‑backed AI insights.
+              Prioritize cases, summarize large files, and explore precedents
+              using citation-backed AI insights.
             </p>
           </div>
 
-          {/* POLICE */}
           <div className="flex flex-col items-center text-center gap-4 p-4">
             <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gray-800">
               <ShieldCheck className="h-8 w-8 text-white" />
@@ -95,7 +98,6 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* GOVT LEGAL */}
           <div className="flex flex-col items-center text-center gap-4 p-4">
             <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gray-800">
               <FileSearch className="h-8 w-8 text-white" />
@@ -110,17 +112,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* WHY THIS APP */}
+      {/* WHY */}
       <section className="min-h-[40vh] w-full flex justify-center items-center px-4">
         <div className="max-w-4xl text-center space-y-4">
-          <h2 className="text-2xl font-bold">
-            Why This Platform?
-          </h2>
+          <h2 className="text-2xl font-bold">Why This Platform?</h2>
           <p className="text-gray-400">
             Legal professionals deal with thousands of pages across FIRs,
-            charge sheets, and judgments. Our system uses a
-            <span className="text-white font-medium"> rule‑aware RAG pipeline </span>
-            to ensure AI responses are explainable, citation‑backed,
+            charge sheets, and judgments. This system uses a
+            <span className="text-white font-medium"> rule-aware RAG pipeline </span>
+            to ensure AI responses are explainable, citation-backed,
             and ethically constrained.
           </p>
         </div>
@@ -133,11 +133,15 @@ export default function LandingPage() {
             Start Exploring Legal Intelligence
           </h3>
           <p className="text-gray-400 text-sm">
-            Sign in to access your role‑specific dashboard and begin
+            Sign in to access your role-specific dashboard and begin
             analyzing legal cases with AI assistance.
           </p>
-          <Link href="/auth/signin">
-            <Button className="mt-2">Create an Account</Button>
+
+          <Link
+            href="/auth/signup"
+            className="bg-gray-200 hover:bg-gray-300 transition-all text-black px-5 py-2 rounded-md inline-block"
+          >
+            Create an Account
           </Link>
         </div>
       </section>

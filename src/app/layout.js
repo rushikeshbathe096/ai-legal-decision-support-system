@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Providers from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Legal AI System",
-  description: "AI-based legal decision support",
+  title: "AI Legal Case System",
+  description: "AI-based legal decision support system",
 };
 
 export default function RootLayout({ children }) {
@@ -23,9 +22,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
-          {children}
-        </Providers>
+        {children}
       </body>
     </html>
   );
