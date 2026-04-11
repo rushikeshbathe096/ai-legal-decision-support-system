@@ -1,8 +1,44 @@
 import { Gavel, ShieldCheck, FileSearch } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter} from "next/navigation";
 
 export default function LandingPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const handleGetStarted = async () => {
+    // Not signed in → go to signin
+    if (!session) {
+      router.push("/auth/signin");
+      return;
+    }
+
+    // Signed in → fetch user role
+    const res = await fetch("/api/user/me");
+
+    if (!res.ok) {
+      // Edge case: session exists but user doc missing
+      router.push("/auth/role-gate");
+      return;
+    }
+
+    const user = await res.json();
+
+    // Role-based redirect
+    if (user.role === "police") {
+      router.push("/police/dashboard");
+    } else if (user.role === "judge") {
+      router.push("/judge/dashboard");
+    } else if (user.role === "govt") {
+      router.push("/govt/dashboard");
+    } else {
+      router.push("/auth/role-gate");
+    }
+  };
   return (
+    <>
+    <Navbar />
     <main className="w-full">
 
       {/* HERO SECTION */}
@@ -111,5 +147,6 @@ export default function LandingPage() {
       </section>
 
     </main>
+    </>
   );
 }
