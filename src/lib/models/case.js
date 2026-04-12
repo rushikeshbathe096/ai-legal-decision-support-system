@@ -30,8 +30,15 @@ const CaseSchema = new mongoose.Schema({
      },
      caseCode: {
   type: String,
-  unique: true
+  unique: true,
+  sparse: true
 },
+  summary: {
+    incidentSummary: String,
+    keyAllegations: [String],
+    ipcSections: [String],
+    citations: [String]
+  },
   createdAt: { 
     type: Date, default: Date.now 
     },

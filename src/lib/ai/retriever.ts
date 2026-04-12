@@ -3,13 +3,13 @@ export async function retrieveRelevantChunks(
   query: string
 ): Promise<string[]> {
 
-  await fetch("http://localhost:8001/store", {
+  await fetch("http://localhost:8000/store", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ chunks })
   })
 
-  const res = await fetch("http://localhost:8001/search", {
+  const res = await fetch("http://localhost:8000/search", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

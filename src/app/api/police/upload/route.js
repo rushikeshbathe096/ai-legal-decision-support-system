@@ -34,12 +34,13 @@ export async function POST(req) {
     const fileName = `${Date.now()}_${file.name}`;
     const filePath = path.join(uploadDir, fileName);
     fs.writeFileSync(filePath, buffer);
-    // Create Case
+    // Create Case with a generated caseCode
     const newCase = await Case.create({
       firNumber,
       policeStation,
       firDate,
       createdBy: user._id,
+      caseCode: `CASE-${Math.random().toString(36).substring(2, 9).toUpperCase()}`
     });
     // Create Document
     const doc = await Document.create({

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Upload, X, FileText } from "lucide-react";
+import { Upload, X, FileText, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,38 +12,67 @@ export default function UploadFIRPage() {
   const [firDate, setFirDate] = useState("");
   const [file, setFile] = useState(null);
 
+  const [isUploading, setIsUploading] = useState(false);
+  const [aiStatus, setAiStatus] = useState("");
+
   const handleSubmit = async () => {
-  if (!file || !firNumber) return;
+    if (!file || !firNumber) return;
 
-  const formData = new FormData();
-  formData.append("firNumber", firNumber);
-  formData.append("policeStation", policeStation);
-  formData.append("firDate", firDate);
-  formData.append("file", file);
+    setIsUploading(true);
+    setAiStatus("Uploading FIR...");
 
-  try {
-    const res = await fetch("/api/police/upload", {
-      method: "POST",
-      body: formData,
-    });
+    const formData = new FormData();
+    formData.append("firNumber", firNumber);
+    formData.append("policeStation", policeStation);
+    formData.append("firDate", firDate);
+    formData.append("file", file);
 
-    const data = await res.json();
+    try {
+      // 1. Upload File and Create Case
+      const res = await fetch("/api/police/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-    if (!res.ok) {
-      alert(data.error || "Upload failed");
-      return;
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "Upload failed");
+        setIsUploading(false);
+        return;
+      }
+
+      const caseId = data.caseId;
+      console.log("Case created:", caseId);
+
+      // 2. Trigger AI Summarization
+      setAiStatus("AI is analyzing the FIR...");
+      const aiRes = await fetch("/api/ai/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ caseId }),
+      });
+
+      const aiData = await aiRes.json();
+
+      if (!aiRes.ok) {
+        console.error("AI Summarization failed:", aiData.error);
+        alert("Case created, but AI summary failed. You can retry from the case page.");
+      } else {
+        console.log("AI Summary generated:", aiData.data);
+      }
+
+      // 3. Redirect to Case Detail Page
+      window.location.href = `/police/cases/${caseId}`;
+
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("Something went wrong during the process");
+    } finally {
+      setIsUploading(false);
+      setAiStatus("");
     }
-
-    console.log("Case created:", data.caseId);
-
-    // Redirect to dashboard or case page
-    window.location.href = "/police/dashboard";
-
-  } catch (error) {
-    console.error("Upload error:", error);
-    alert("Something went wrong");
-  }
-};
+  };
 
 
   const handleFileChange = (e) => {
@@ -154,12 +183,19 @@ export default function UploadFIRPage() {
         </div>
 
         {/* D. SUBMIT */}
-        <div className="pt-4 flex justify-end">
+        <div className="pt-4 flex flex-col items-end gap-3">
+          {isUploading && (
+            <div className="flex items-center gap-2 text-sm text-blue-400 animate-pulse">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              {aiStatus}
+            </div>
+          )}
           <Button
-            disabled={isSubmitDisabled}
+            disabled={isSubmitDisabled || isUploading}
             onClick={handleSubmit}
+            className="w-full sm:w-auto min-w-[120px]"
           >
-            Upload
+            {isUploading ? "Processing..." : "Create Case & Analyze"}
           </Button>
         </div>
 

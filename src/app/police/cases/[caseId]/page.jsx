@@ -3,10 +3,11 @@
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, FileText, Download, Calendar, MapPin, Hash, Clock, FileWarning } from "lucide-react";
+import { ArrowLeft, FileText, Download, Calendar, MapPin, Hash, Clock, FileWarning, Sparkles, AlertCircle, Gavel, AlertTriangle, BrainCircuit, Zap, FolderOpen } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const formatDate = (dateString, includeTime = false) => {
     if (!dateString) return "N/A";
@@ -121,43 +122,143 @@ export default function CaseDetailPage({ params }) {
                                 FIR Information
                             </CardTitle>
                         </div>
-                        <CardContent className="p-0">
-                            <dl className="divide-y divide-gray-100">
-                                <div className="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 hover:bg-gray-50/50 transition-colors">
-                                    <dt className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                        <CardContent className="p-0 bg-[#0a0a0a]">
+                            <dl className="divide-y divide-white/10">
+                                <div className="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 hover:bg-white/5 transition-colors">
+                                    <dt className="text-sm font-medium text-white/60 flex items-center gap-2">
                                         <Hash className="h-4 w-4" /> FIR Number
                                     </dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0 font-semibold text-lg">
+                                    <dd className="mt-1 text-sm text-white sm:col-span-2 sm:mt-0 font-semibold text-lg">
                                         {caseData.firNumber}
                                     </dd>
                                 </div>
-                                <div className="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 hover:bg-gray-50/50 transition-colors">
-                                    <dt className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                <div className="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 hover:bg-white/5 transition-colors">
+                                    <dt className="text-sm font-medium text-white/60 flex items-center gap-2">
                                         <MapPin className="h-4 w-4" /> Police Station
                                     </dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <dd className="mt-1 text-sm text-white sm:col-span-2 sm:mt-0">
                                         {caseData.policeStation}
                                     </dd>
                                 </div>
-                                <div className="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 hover:bg-gray-50/50 transition-colors">
-                                    <dt className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                <div className="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 hover:bg-white/5 transition-colors">
+                                    <dt className="text-sm font-medium text-white/60 flex items-center gap-2">
                                         <Calendar className="h-4 w-4" /> Incident/FIR Date
                                     </dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <dd className="mt-1 text-sm text-white sm:col-span-2 sm:mt-0">
                                         {formatDate(caseData.firDate)}
                                     </dd>
                                 </div>
-                                <div className="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 hover:bg-gray-50/50 transition-colors">
-                                    <dt className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                <div className="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 hover:bg-white/5 transition-colors">
+                                    <dt className="text-sm font-medium text-white/60 flex items-center gap-2">
                                         <Clock className="h-4 w-4" /> Uploaded On
                                     </dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <dd className="mt-1 text-sm text-white sm:col-span-2 sm:mt-0">
                                         {formatDate(caseData.createdAt, true)}
                                     </dd>
                                 </div>
                             </dl>
                         </CardContent>
                     </Card>
+
+                    {/* AI SUMMARY COMPONENT */}
+                    {caseData.summary ? (
+                        <Card className="shadow-md border-blue-100 bg-gradient-to-b from-blue-50/30 to-white overflow-hidden">
+                            <div className="bg-blue-600 px-6 py-4 flex items-center justify-between">
+                                <CardTitle className="text-lg flex items-center gap-2 text-white">
+                                    <Sparkles className="h-5 w-5" />
+                                    AI-Generated Incident Summary
+                                </CardTitle>
+                                <Badge className="bg-white/20 text-white border-none text-[10px] uppercase tracking-wider">
+                                    Decision Support
+                                </Badge>
+                            </div>
+                            <CardContent className="p-6 space-y-6">
+                                {/* Incident Summary */}
+                                <div>
+                                    <h4 className="text-sm font-semibold text-blue-700 uppercase tracking-tight mb-2">The Incident</h4>
+                                    <p className="text-gray-700 leading-relaxed italic border-l-4 border-blue-200 pl-4 py-1">
+                                        {caseData.summary.incidentSummary || "Summary not available."}
+                                    </p>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                                    {/* Key Allegations */}
+                                    <div className="space-y-3">
+                                        <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-tight flex items-center gap-2">
+                                            <AlertCircle className="h-4 w-4 text-amber-500" />
+                                            Key Allegations
+                                        </h4>
+                                        <ul className="space-y-2">
+                                            {caseData.summary.keyAllegations?.length > 0 ? (
+                                                caseData.summary.keyAllegations.map((item, i) => (
+                                                    <li key={i} className="text-sm text-gray-600 flex items-start gap-2 bg-gray-50 p-2 rounded border border-gray-100 italic">
+                                                        <span className="text-amber-500 font-bold mt-0.5">•</span>
+                                                        {item}
+                                                    </li>
+                                                ))
+                                            ) : (
+                                                <p className="text-xs text-gray-400 italic">None identified.</p>
+                                            )}
+                                        </ul>
+                                    </div>
+
+                                    {/* IPC Sections */}
+                                    <div className="space-y-3">
+                                        <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-tight flex items-center gap-2">
+                                            <Gavel className="h-4 w-4 text-blue-500" />
+                                            Cited IPC Sections
+                                        </h4>
+                                        <div className="flex flex-wrap gap-2">
+                                            {caseData.summary.ipcSections?.length > 0 ? (
+                                                caseData.summary.ipcSections.map((section, i) => (
+                                                    <Badge key={i} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 font-mono py-1 px-3">
+                                                        {section}
+                                                    </Badge>
+                                                ))
+                                            ) : (
+                                                <p className="text-xs text-gray-400 italic">No specific sections cited.</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Important Disclaimer */}
+                                <div className="mt-6 pt-4 border-t border-gray-100 flex gap-3 items-start opacity-70">
+                                    <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
+                                    <p className="text-[10px] text-gray-500 leading-tight">
+                                        Disclaimer: This summary is generated by an AI assistant based strictly on the uploaded document. It is intended for decision support only and should not replace manual verification for legal proceedings.
+                                    </p>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        <Card className="shadow-sm border-dashed border-gray-200">
+                            <CardContent className="p-12 flex flex-col items-center justify-center text-center">
+                                <BrainCircuit className="h-10 w-10 text-gray-300 mb-4" />
+                                <CardTitle className="text-gray-400 font-medium">No AI Summary Yet</CardTitle>
+                                <p className="text-sm text-gray-400 mt-2 max-w-xs">
+                                    The AI analysis process has not been completed for this case yet.
+                                </p>
+                                <Button 
+                                    variant="outline" 
+                                    className="mt-6 border-blue-200 text-blue-600 hover:bg-blue-50"
+                                    onClick={async () => {
+                                        try {
+                                            const res = await fetch("/api/ai/summarize", {
+                                                method: "POST",
+                                                body: JSON.stringify({ caseId: caseData._id })
+                                            });
+                                            if (res.ok) window.location.reload();
+                                            else alert("Failed to trigger analysis");
+                                        } catch (e) { alert("Error: " + e.message); }
+                                    }}
+                                >
+                                    <Zap className="h-4 w-4 mr-2" />
+                                    Generate Summary
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
 
                 {/* Right Column: Documents */}
@@ -225,5 +326,3 @@ export default function CaseDetailPage({ params }) {
     );
 }
 
-// Ensure lucide icon is available for import above
-import { FolderOpen } from "lucide-react";
